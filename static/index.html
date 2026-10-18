@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能OnCall助手</title>
+    <title>OnCall Agent · 智能值班排障项目</title>
     <link rel="stylesheet" href="/static/styles.css">
     <!-- Markdown 渲染库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
@@ -16,7 +16,7 @@
         <!-- 左侧边栏 -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-title">智能OnCall助手</h2>
+                <h2 class="sidebar-title">OnCall <span>Agent</span></h2>
             </div>
             
             <div class="sidebar-content">
@@ -41,17 +41,44 @@
 
         <!-- 主内容区域 -->
         <main class="main-content">
-            <button class="ai-ops-top-btn" id="aiOpsSidebarBtn">
+            <button class="ai-ops-top-btn" id="aiOpsSidebarBtn" aria-label="启动智能诊断">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>AI Ops</span>
+                <span>启动诊断</span>
             </button>
             <div class="chat-container">
                 <div class="welcome-greeting" id="welcomeGreeting">
-                    <p>你好！我是智能Oncall小助手</p>
+                    <section class="project-intro" aria-labelledby="projectTitle">
+                        <div class="intro-topline"><span class="intro-dot"></span> PYTHON · ONCALL AGENT · PROJECT BRIEF</div>
+                        <div class="intro-hero">
+                            <div>
+                                <p class="intro-eyebrow">面向研发与运维值班场景</p>
+                                <h1 id="projectTitle">从告警到结论，<br><em>让排障有据可循。</em></h1>
+                                <p class="intro-lead">收到告警后，值班人员常要分别查文档、日志和监控，再整理线索判断原因。这个项目把知识检索、工具查询和多步诊断接入同一条工作流，让分析过程与依据可见。</p>
+                                <div class="intro-actions">
+                                    <a class="intro-primary" href="https://github.com/YeChenglin8888/Oncall" target="_blank" rel="noopener noreferrer">查看源码 <span aria-hidden="true">↗</span></a>
+                                    <a class="intro-secondary" href="/docs">查看 API 文档 <span aria-hidden="true">→</span></a>
+                                </div>
+                            </div>
+                            <div class="intro-flow" aria-label="诊断流程：接收问题，查找证据，生成报告">
+                                <div class="flow-label">DIAGNOSIS FLOW <span>01 — 03</span></div>
+                                <div class="flow-step"><span>01</span><div><strong>接收问题</strong><small>告警现象 · 用户提问</small></div></div>
+                                <div class="flow-step"><span>02</span><div><strong>查找证据</strong><small>知识库 · 日志 · 监控</small></div></div>
+                                <div class="flow-step"><span>03</span><div><strong>输出分析</strong><small>诊断过程 · 报告</small></div></div>
+                                <div class="flow-foot">Plan → Execute → Replan</div>
+                            </div>
+                        </div>
+                        <div class="intro-divider"><span>系统能力</span><span>WHAT THE CODE DOES</span></div>
+                        <div class="intro-features">
+                            <article><span class="feature-index">01 / KNOWLEDGE</span><h2>知识库问答</h2><p>文档解析、分块并写入 Milvus；提问时检索相关片段，供对话 Agent 使用。</p><a href="https://github.com/YeChenglin8888/Oncall/blob/main/app/tools/knowledge_tool.py" target="_blank" rel="noopener noreferrer">查看检索工具 ↗</a></article>
+                            <article><span class="feature-index">02 / DIAGNOSIS</span><h2>多步故障诊断</h2><p>LangGraph 编排规划、执行与重规划，按查询结果推进排查步骤。</p><a href="https://github.com/YeChenglin8888/Oncall/blob/main/app/services/aiops_service.py" target="_blank" rel="noopener noreferrer">查看诊断流程 ↗</a></article>
+                            <article><span class="feature-index">03 / INTEGRATION</span><h2>工具与流式反馈</h2><p>通过 MCP 接入日志、监控查询；用 SSE 返回对话内容与诊断进度。</p><a href="https://github.com/YeChenglin8888/Oncall/blob/main/app/agent/mcp_client.py" target="_blank" rel="noopener noreferrer">查看工具接入 ↗</a></article>
+                        </div>
+                        <div class="intro-bottom"><span>FASTAPI</span><span>LANGCHAIN</span><span>LANGGRAPH</span><span>MILVUS</span><span>MCP</span><span>SSE</span></div>
+                    </section>
                 </div>
                 <div class="chat-messages" id="chatMessages">
                 </div>
@@ -59,7 +86,8 @@
                 <div class="chat-input-container">
                     <div class="input-group-wrapper">
                         <div class="input-wrapper">
-                            <input type="text" id="messageInput" placeholder="问问智能OnCall助手" maxlength="1000" class="message-input">
+                            <label class="sr-only" for="messageInput">向 OnCall 助手提问</label>
+                            <input type="text" id="messageInput" placeholder="试着提问：服务响应变慢，应该先查什么？" maxlength="1000" class="message-input">
                             <div class="input-bottom-bar">
                                 <div class="tools-btn-wrapper">
                                     <button class="tools-btn" id="toolsBtn" title="更多选项">
@@ -103,7 +131,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="send-btn-circle" id="sendButton" title="发送">
+                                    <button class="send-btn-circle" id="sendButton" title="发送" aria-label="发送消息">
                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
